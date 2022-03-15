@@ -2,35 +2,9 @@ import { StatusBar } from 'expo-status-bar'
 import { StyleSheet, Text, View } from 'react-native'
 import React, {Component} from 'react'
 //import MapScreen from './components/MapScreen'
+import Pathfind from './components/Pathfind'
 import * as Location from 'expo-location'
 import MapView, {Marker} from 'react-native-maps'; // remove PROVIDER_GOOGLE import if not using Google Maps
-
-//import { registerRootComponent } from 'expo';
-//import { Permissions } from 'expo';
-//import MapView, {Marker} from 'react-native-maps'; // remove PROVIDER_GOOGLE import if not using Google Maps
-//import Geolocation from '@react-native-community/geolocation';
-
-//Geolocation.setRNConfiguration(config);
-
-
-// const checkPermission = async () => {
-//   const hasPermission = await Location.requestForegroundPermissionsAsync();
-//   if (hasPermission.status === 'granted') {
-//     const permission = await askPermission();
-//     return permission;
-//   }
-//   return true;
-// };
-// const askPermission = async () => {
-//   const permission = await Location.getForegroundPermissionsAsync();
-//   return permission.status === 'granted';
-// };
-
-// export const getUserLocation = async () => {
-//   const userLocation = await Location.getCurrentPositionAsync();
-//   return userLocation.coords;
-// };
-
 
 
 export default class App extends Component {
@@ -43,8 +17,8 @@ export default class App extends Component {
       west: null,
       north: null,
       east: null,
-      latitude: 35.681236,
-      longitude: 139.767125,
+      latitude: 38.648987,
+      longitude: -90.312553,
     }
   }
 
@@ -57,7 +31,6 @@ export default class App extends Component {
   }
 
   async componentDidMount(){
-    
     try {
       let { status } =  await Location.requestForegroundPermissionsAsync();
       if (status !== 'granted') {
@@ -74,20 +47,31 @@ export default class App extends Component {
     return (
       <View style={styles.container}>
         <MapView
-                style={styles.map}
-                region={{
-                latitude: this.state.latitude,
-                longitude: this.state.longitude,
-                latitudeDelta: 0.015,
-                longitudeDelta: 0.0121,
-                }}
-            >
-                <Marker coordinate={this.state}/>
-            </MapView>
+              style={styles.map}
+              region={{
+              latitude: this.state.latitude,
+              longitude: this.state.longitude,
+              latitudeDelta: 0.015,
+              longitudeDelta: 0.0121,
+              }}>
+
+            <Marker coordinate={this.state} pinColor = {"lightblue"} // any color
+            title={"Current Location"}
+            />
+
+            <Marker coordinate={{latitude: 38.647445,longitude: -90.309686}} pinColor = {"red"} // any color
+            title={"Mallinckrodt"}
+            />
+                
+            <Pathfind />
+
+        </MapView>
+        
         <StatusBar style="auto" />
       </View>
     )
   }
+
   
 }
 
